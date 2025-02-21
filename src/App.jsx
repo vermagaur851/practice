@@ -1,35 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from "react";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [onChangeValue, setOnChangeValue] = useState("");
+
+  const onChangefun = (e) => {
+    let value = e.target.value;
+    setOnChangeValue(value);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="bg-gray-400 h-screen m-4 p-2">
+      <div className="flex bg-green-400 justify-center mb-2">
+        {onChangeValue === ""
+          ? "This is to inform you that this application is in working condition"
+          : onChangeValue}
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+      <div className="name flex justify-center mb-2">
+        <label className="mr-2" htmlFor=""> Name: </label>
+        <input
+          type="text"
+          placeholder="Type your name here"
+          onChange={onChangefun}
+        />
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+
+    </div>
+  );
 }
 
-export default App
+export default App;
