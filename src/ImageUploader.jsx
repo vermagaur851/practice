@@ -15,12 +15,13 @@ const ImageUploader = () => {
   const handleUpload = async () => {
     if (!selectedImage) return;
     setLoading(true);
-  
+
     const formData = new FormData();
     formData.append("image", selectedImage);
-  
+
     try {
-      const res = await axios.post("/upload", formData);
+      const res = await axios.post("http://localhost:5000/upload", formData);
+      // Assuming the backend returns { urls: [url1, url2, ...] }
       setImageUrls(res.data.urls);
     } catch (error) {
       console.error(error);
@@ -29,7 +30,6 @@ const ImageUploader = () => {
       setLoading(false);
     }
   };
-  
 
   return (
     <div className="p-6 bg-gray-100 rounded-lg shadow-md text-center">

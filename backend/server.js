@@ -2,27 +2,20 @@ import express from "express";
 import multer from "multer";
 import { v2 as cloudinary } from "cloudinary";
 import dotenv from "dotenv";
+import cors from "cors";
 import fs from "fs";
-import serverless from "serverless-http";
 
 dotenv.config();
 
-const upload = multer({ dest: "/tmp/uploads/" });
+const app = express();
+app.use(cors());
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
-
-const app = express();
-
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*"); 
-  res.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-  next();
-});
+const upload = multer({ dest: "uploads/" });
 
 app.post("/upload", upload.single("image"), async (req, res) => {
   try {
@@ -36,12 +29,14 @@ app.post("/upload", upload.single("image"), async (req, res) => {
     });
 
     fs.unlinkSync(req.file.path);
-
-    const transformedUrls = result.eager.map((t) => t.secure_url);
+    const transformedUrls = result.eager.map(
+      (transformation) => transformation.secure_url
+    );
     res.json({ success: true, urls: transformedUrls });
   } catch (error) {
+    console.error("Upload error:", error);
     res.status(500).json({ success: false, error: error.message });
   }
 });
 
-export default serverless(app);
+app.listen(5000, () => console.log("Server running on port 5000"));
