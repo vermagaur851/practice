@@ -12,7 +12,7 @@ function App() {
     <div className="bg-gray-400 h-screen m-4 p-2">
       <div className="flex bg-green-400 justify-center mb-2">
         {onChangeValue === ""
-          ? "This is to inform you that this application is in working condition"
+          ? "This is to inform you, this application is in working condition"
           : onChangeValue}
       </div>
       <div className="name flex justify-center mb-2">
